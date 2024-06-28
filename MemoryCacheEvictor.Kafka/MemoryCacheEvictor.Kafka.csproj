@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<version>1.0.0</version>
+		<VersionSuffix Condition=" '$(BUILD_NUMBER)' == '' ">pre$([System.DateTime]::Now.ToString("yyyyMMddHHmm"))</VersionSuffix>
+		<title>MemoryCacheEvictor.Kafka</title>
+		<authors>FabrikamChampions</authors>
+		<description>Consumes a Kafka Topic and removes the correspondent MemoryCache items</description>
+		<tags>Kafka; MemoryCache</tags>
+		<copyright>Copyright ©FabrikamChampions 2024</copyright>
+		<DebugType>embedded</DebugType>
+		<IsPackable>true</IsPackable>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageDescription>Consumes a Kafka Topic and removes the correspondent MemoryCache items</PackageDescription>
+		<RepositoryUrl>https://github.com/fabrikam-champions/MemoryCacheEvictor</RepositoryUrl>
+	</PropertyGroup>
+	<Target Name="PushToLocalFeed" AfterTargets="Pack">
+		<Exec Command="C:\Nuget\nuget push $(MSBuildProjectDirectory)\$(PackageOutputPath)$(ProjectName).$(Version).nupkg -Source C:\LocalNuGetFeed" />
+	</Target>
+	<ItemGroup>
+	  <PackageReference Include="Confluent.Kafka" Version="2.4.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+	  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+	  <PackageReference Include="System.Text.Json" Version="8.0.3" />
+	</ItemGroup>
+
+</Project>
