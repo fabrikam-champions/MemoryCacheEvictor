@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Reflection;
+using Microsoft.Extensions.Options;
 namespace Microsoft.AspNetCore.Builder
 {
     public static class MemoryCacheEvictorKafkaExtensions
@@ -106,7 +107,7 @@ namespace Microsoft.AspNetCore.Builder
         }
         private static ConsumerConfig GetNewConsumerConfig(IApplicationBuilder app)
         {
-            var injectConsumerConfig = app.ApplicationServices.GetService<ConsumerConfig>();
+            var injectConsumerConfig = app.ApplicationServices.GetService<ConsumerConfig>() ?? app.ApplicationServices.GetService<IOptions<ConsumerConfig>>()?.Value;
             var result = new ConsumerConfig();
             var uid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
             if (injectConsumerConfig != null)
